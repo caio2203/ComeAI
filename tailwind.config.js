@@ -24,6 +24,8 @@ export default {
         protein: '#F87171',
         carb: '#FBBF24',
         fat: '#A78BFA',
+        water: '#60A5FA',
+        'water-deep': '#2563EB',
       },
       fontFamily: {
         sans: [

@@ -55,8 +55,8 @@ Sem backend, sem banco, sem servidor. Dados ficam em `localStorage` + IndexedDB.
 | 2   | Módulo de IA (parsing + confirmação + salvar)        | Concluída   |
 | 3   | Diário do dia + painel de macros                     | Concluída   |
 | 4   | Calculadora TMB / TDEE                               | Concluída   |
-| 5   | Hidratação                                           | Próxima     |
-| 6   | Evolução com gráficos (7 / 30 dias)                  | Pendente    |
+| 5   | Hidratação                                           | Concluída   |
+| 6   | Evolução com gráficos (7 / 30 dias)                  | Próxima     |
 | 7   | Perfil + exportação JSON                             | Pendente    |
 | 8   | App unificado final                                  | Pendente    |
 
@@ -108,6 +108,7 @@ ComeAI/
     │   ├── openfoodfacts.js cliente OFF v2 com cache
     │   ├── gemini.js        cliente Gemini Flash (fetch + JSON schema)
     │   ├── nutritionEngine.js  cascata TACO → OFF → Gemini
+    │   ├── hydration.js     persistência de água + meta diária
     │   └── speech.js        wrapper Web Speech API
     ├── components/
     │   ├── Layout.jsx        shell mobile (480px) com transições
@@ -118,7 +119,8 @@ ComeAI/
     │   ├── InstallPrompt.jsx prompt PWA customizado
     │   ├── PagePlaceholder.jsx
     │   ├── ai/               VoiceButton, ConfidenceBadge, FoodItemCard, ConfirmationView
-    │   └── diary/            DaySelector, MacroRing, MealCard, MealSection, DayDelta
+    │   ├── diary/            DaySelector, MacroRing, MealCard, MealSection, DayDelta
+    │   └── hydration/        WaterRing, QuickAdd, CustomAdd, EntryList
     └── pages/            Diary, Hydration, Progress, Profile, Calculator
 ```
 

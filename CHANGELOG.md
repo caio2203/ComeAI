@@ -7,6 +7,22 @@ O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.
 ## [Unreleased]
 
 ### Added
+- **Hidratação (etapa 5)**: registro de água com persistência em IndexedDB
+  bucketada por dia local (`hydration:day:YYYY-MM-DD`), mesma estratégia do
+  diário de refeições.
+  - `WaterRing` SVG animado com gradiente azul (mesma técnica do `MacroRing`
+    para manter linguagem visual unificada).
+  - Botões rápidos de 150 / 250 / 500 ml (copo, copo grande, garrafa) com
+    ícone de gota dimensionado pela quantidade.
+  - Campo personalizado com stepper ±50 ml e validação 1-2000 ml.
+  - Lista de registros com swipe-to-delete (mesmo gesto e mesmo threshold do
+    `MealCard`).
+  - Reuso de `DaySelector` para navegar entre dias e bloqueio de dias futuros.
+  - Meta diária calculada como 35 ml × peso (FAO/EFSA), arredondada para o
+    múltiplo de 50 ml mais próximo e limitada a [1500, 4500] ml. Override
+    via `profile.waterTargetMl` quando o usuário definir manualmente.
+  - Token `water` (`#60A5FA`) e `water-deep` (`#2563EB`) adicionados ao
+    Tailwind ao lado de `protein` / `carb` / `fat`.
 - **Calculadora TMB / TDEE (etapa 4)**: três fórmulas (Mifflin-St Jeor,
   Harris-Benedict revisada, Katch-McArdle), cinco níveis de atividade
   (PAL FAO/WHO) e três objetivos (cutting −500 / manutenção / bulk +300).
