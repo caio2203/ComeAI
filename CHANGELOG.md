@@ -7,6 +7,17 @@ O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.
 ## [Unreleased]
 
 ### Added
+- **Calculadora TMB / TDEE (etapa 4)**: três fórmulas (Mifflin-St Jeor,
+  Harris-Benedict revisada, Katch-McArdle), cinco níveis de atividade
+  (PAL FAO/WHO) e três objetivos (cutting −500 / manutenção / bulk +300).
+  - Distribuição de macros padrão por objetivo (proteína 2.2 g/kg em
+    cutting, 1.8 g/kg em manutenção/bulk; gordura 25% das calorias;
+    carbo no restante).
+  - Preview ao vivo de TMB, TDEE, meta diária e gramas de cada macro
+    enquanto o usuário altera qualquer campo.
+  - Botão "Aplicar no perfil" grava as metas em `profile` e leva o
+    usuário direto ao Diário — o MacroRing passa a usar as metas
+    personalizadas automaticamente.
 - **Diário completo (etapa 3)**: substitui a versão mínima da etapa 2.
   - `DaySelector` para navegar entre dias (com bloqueio de dias futuros e
     atalho "Voltar para hoje").

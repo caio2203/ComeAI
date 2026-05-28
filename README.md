@@ -54,8 +54,8 @@ Sem backend, sem banco, sem servidor. Dados ficam em `localStorage` + IndexedDB.
 | 1   | Estrutura PWA base (shell mobile + SW)               | Concluída   |
 | 2   | Módulo de IA (parsing + confirmação + salvar)        | Concluída   |
 | 3   | Diário do dia + painel de macros                     | Concluída   |
-| 4   | Calculadora TMB / TDEE                               | Próxima     |
-| 5   | Hidratação                                           | Pendente    |
+| 4   | Calculadora TMB / TDEE                               | Concluída   |
+| 5   | Hidratação                                           | Próxima     |
 | 6   | Evolução com gráficos (7 / 30 dias)                  | Pendente    |
 | 7   | Perfil + exportação JSON                             | Pendente    |
 | 8   | App unificado final                                  | Pendente    |
