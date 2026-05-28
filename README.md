@@ -123,4 +123,8 @@ ComeAI/
 
 ## 📄 Licença
 
-Projeto pessoal — sem licença pública por enquanto.
+Licenciado sob a **[GNU General Public License v3.0](LICENSE)** (GPL-3.0).
+
+Em resumo: você pode usar, estudar, modificar e redistribuir o código,
+desde que qualquer trabalho derivado também seja distribuído sob a GPL-3.0
+e preserve este aviso de licença.
