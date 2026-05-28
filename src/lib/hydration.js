@@ -11,8 +11,8 @@
  * unknown. A user-defined override (`profile.waterTargetMl`) wins over both.
  *
  * Exports: addEntry, removeEntry, getDay, getTotalForDay, listDays,
- *          dailyTarget, MIN_TARGET_ML, MAX_TARGET_ML, DEFAULT_TARGET_ML,
- *          PER_KG_ML
+ *          dailyTarget, exportAll, importAll, clearAll, MIN_TARGET_ML,
+ *          MAX_TARGET_ML, DEFAULT_TARGET_ML, PER_KG_ML
  */
 
 import { get, set, del, createStore } from 'idb-keyval';
@@ -97,6 +97,40 @@ export async function removeEntry(iso, id) {
 export async function getTotalForDay(iso) {
   const day = await getDay(iso);
   return day.reduce((sum, e) => sum + e.ml, 0);
+}
+
+/**
+ * @description Dump every water day to a serializable object, mirroring
+ *   `exportAll` in db.js so the backup payload stays uniform.
+ * @returns {Promise<{days: Record<string, WaterEntry[]>}>}
+ */
+export async function exportAll() {
+  const days = await listDays();
+  const out = {};
+  for (const d of days) out[d] = await getDay(d);
+  return { days: out };
+}
+
+/**
+ * @description Bulk-write water days from a backup. Merge semantics, identical
+ *   to db.js `importAll`.
+ * @param {{days: Record<string, WaterEntry[]>}} payload
+ * @returns {Promise<number>} how many days were written
+ */
+export async function importAll(payload) {
+  const days = payload?.days || {};
+  const isos = Object.keys(days);
+  for (const iso of isos) await set(dayKey(iso), days[iso], store);
+  const idx = await readIndex();
+  await writeIndex(Array.from(new Set([...idx, ...isos])).sort());
+  return isos.length;
+}
+
+/** @description Delete every water day and the index (Profile → "Apagar tudo"). */
+export async function clearAll() {
+  const idx = await readIndex();
+  for (const iso of idx) await del(dayKey(iso), store);
+  await del(INDEX_KEY, store);
 }
 
 /**

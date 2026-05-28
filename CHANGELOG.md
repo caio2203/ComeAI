@@ -7,6 +7,27 @@ O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.
 ## [Unreleased]
 
 ### Added
+- **Perfil + exportação JSON (etapa 7)**: tela de Perfil completa.
+  - Formulário de dados pessoais editável (nome, sexo, peso, altura, idade,
+    nível de atividade, objetivo) gravando direto no `profile` — o MacroRing
+    do diário e a meta de hidratação passam a usar esses valores.
+  - Override manual da meta diária de água (em branco volta ao automático de
+    35 ml/kg).
+  - Resumo read-only das metas atuais (kcal / P / C / G) com atalho para a
+    Calculadora recalcular.
+  - Backup completo em `src/lib/backup.js`: exporta refeições, hidratação,
+    perfil e modelo em um único JSON e restaura de arquivo (merge — nunca
+    apaga dias que só existem no dispositivo). A chave Gemini é
+    deliberadamente excluída do arquivo (regra: chave só em `localStorage`).
+  - Importação valida a etiqueta do app antes de gravar para um JSON qualquer
+    não sobrescrever os dados.
+  - "Apagar tudo" com confirmação em dois toques, limpando IndexedDB
+    (refeições + água) e todas as configurações.
+  - `importAll` / `clearAll` adicionados a `db.js` e `hydration.js`;
+    `exportAll` de hidratação espelhando o de refeições.
+  - Primitivos de formulário (`Section`, `ChipRow`, `ToggleButton`,
+    `NumberField`) extraídos para `src/components/forms/Fields.jsx` e
+    reaproveitados por Calculadora e Perfil, eliminando a duplicação.
 - **Evolução com gráficos (etapa 6)**: página de Progresso lê os buckets
   históricos do IndexedDB (uma leitura por dia da janela) e monta a evolução
   de 7 ou 30 dias.

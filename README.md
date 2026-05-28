@@ -57,8 +57,8 @@ Sem backend, sem banco, sem servidor. Dados ficam em `localStorage` + IndexedDB.
 | 4   | Calculadora TMB / TDEE                               | Concluída   |
 | 5   | Hidratação                                           | Concluída   |
 | 6   | Evolução com gráficos (7 / 30 dias)                  | Concluída   |
-| 7   | Perfil + exportação JSON                             | Próxima     |
-| 8   | App unificado final                                  | Pendente    |
+| 7   | Perfil + exportação JSON                             | Concluída   |
+| 8   | App unificado final                                  | Próxima     |
 
 ---
 
@@ -109,6 +109,7 @@ ComeAI/
     │   ├── gemini.js        cliente Gemini Flash (fetch + JSON schema)
     │   ├── nutritionEngine.js  cascata TACO → OFF → Gemini
     │   ├── hydration.js     persistência de água + meta diária
+    │   ├── backup.js        exportar / importar / apagar tudo (JSON)
     │   └── speech.js        wrapper Web Speech API
     ├── components/
     │   ├── Layout.jsx        shell mobile (480px) com transições
@@ -120,6 +121,7 @@ ComeAI/
     │   ├── PagePlaceholder.jsx
     │   ├── ai/               VoiceButton, ConfidenceBadge, FoodItemCard, ConfirmationView
     │   ├── diary/            DaySelector, MacroRing, MealCard, MealSection, DayDelta
+    │   ├── forms/            Section, ChipRow, ToggleButton, NumberField (Calculadora + Perfil)
     │   └── hydration/        WaterRing, QuickAdd, CustomAdd, EntryList
     └── pages/            Diary, Hydration, Progress, Profile, Calculator
 ```

@@ -8,7 +8,7 @@
  *   meals:day:YYYY-MM-DD   → MealEntry[]
  *
  * Exports: listDays, getDay, saveMeal, updateMeal, deleteMeal, getTotalsForDay,
- *          exportAll
+ *          exportAll, importAll, clearAll
  */
 
 import { get, set, del, createStore } from 'idb-keyval';
@@ -172,4 +172,31 @@ export async function exportAll() {
   const out = {};
   for (const d of days) out[d] = await getDay(d);
   return { days: out };
+}
+
+/**
+ * @description Bulk-write days from an exported payload (Profile → "Importar").
+ *   Merges: each day in the payload overwrites that day's bucket and joins the
+ *   index, but days absent from the payload stay untouched — an import never
+ *   silently drops history already on the device.
+ * @param {{days: Record<string, MealEntry[]>}} payload
+ * @returns {Promise<number>} how many days were written
+ */
+export async function importAll(payload) {
+  const days = payload?.days || {};
+  const isos = Object.keys(days);
+  for (const iso of isos) await set(dayKey(iso), days[iso], store);
+  const idx = await readIndex();
+  await writeIndex(Array.from(new Set([...idx, ...isos])).sort());
+  return isos.length;
+}
+
+/**
+ * @description Delete every meal day and the index. Used by Profile →
+ *   "Apagar tudo". Hydration and settings are wiped by their own modules.
+ */
+export async function clearAll() {
+  const idx = await readIndex();
+  for (const iso of idx) await del(dayKey(iso), store);
+  await del(INDEX_KEY, store);
 }
