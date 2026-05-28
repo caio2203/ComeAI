@@ -56,8 +56,8 @@ Sem backend, sem banco, sem servidor. Dados ficam em `localStorage` + IndexedDB.
 | 3   | Diário do dia + painel de macros                     | Concluída   |
 | 4   | Calculadora TMB / TDEE                               | Concluída   |
 | 5   | Hidratação                                           | Concluída   |
-| 6   | Evolução com gráficos (7 / 30 dias)                  | Próxima     |
-| 7   | Perfil + exportação JSON                             | Pendente    |
+| 6   | Evolução com gráficos (7 / 30 dias)                  | Concluída   |
+| 7   | Perfil + exportação JSON                             | Próxima     |
 | 8   | App unificado final                                  | Pendente    |
 
 ---

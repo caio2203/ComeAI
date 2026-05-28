@@ -7,6 +7,24 @@ O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.
 ## [Unreleased]
 
 ### Added
+- **Evolução com gráficos (etapa 6)**: página de Progresso lê os buckets
+  históricos do IndexedDB (uma leitura por dia da janela) e monta a evolução
+  de 7 ou 30 dias.
+  - Chips 7 dias / 30 dias com o mesmo padrão visual da Calculadora.
+  - Gráfico de calorias (linha) e gráfico de hidratação (barras) via Recharts
+    `ResponsiveContainer`, cada um com `ReferenceLine` tracejada na meta diária.
+  - Tooltip estilizado com a shell do app (fundo `bg-elev`, borda `white/10`,
+    separador de milhar pt-BR) e `animationDuration` de 600 ms.
+  - Macros médios do período (mini barras P/C/G) calculados sobre os dias com
+    refeições registradas, com as metas do perfil como referência.
+  - Card "Aderência": percentual dos dias rastreados dentro de ±10% da meta de
+    calorias E com pelo menos 80% da meta de água. Dias sem registro ficam fora
+    do denominador para não contarem como falha.
+  - Estado vazio com card pontilhado ("Registre refeições e água para ver sua
+    evolução") quando ainda não há dados na janela.
+  - `Progress` carregada via `React.lazy` + `Suspense`: o Recharts fica num
+    chunk separado (~107 KB gz) baixado só ao abrir a Evolução, mantendo o
+    bundle inicial do diário em ~118 KB gz.
 - **Hidratação (etapa 5)**: registro de água com persistência em IndexedDB
   bucketada por dia local (`hydration:day:YYYY-MM-DD`), mesma estratégia do
   diário de refeições.
