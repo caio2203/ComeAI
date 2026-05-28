@@ -7,6 +7,19 @@ O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.
 ## [Unreleased]
 
 ### Added
+- **Diário completo (etapa 3)**: substitui a versão mínima da etapa 2.
+  - `DaySelector` para navegar entre dias (com bloqueio de dias futuros e
+    atalho "Voltar para hoje").
+  - `MacroRing`: anel SVG animado para calorias com barras de P/C/G ao lado.
+  - `DayDelta` comparativo com o dia anterior (estilo neutro — variação
+    pode ser boa ou ruim dependendo do objetivo).
+  - `MealSection` agrupa refeições por tipo na ordem canônica
+    (Café → Pré → Almoço → Pós → Jantar → Lanche) com soma de kcal por seção.
+  - `MealCard` com **swipe-to-delete** via Framer Motion drag (commit em
+    `−60 px` ou velocidade `< −400 px/s`).
+  - Helper `shiftISO(iso, delta)` em `db.js` para navegação por dia sem
+    drift em DST.
+
 - **Módulo de IA (etapa 2)**: pipeline completo de registro de refeição em
   linguagem natural.
   - Entrada por texto **ou** voz (Web Speech API pt-BR, com fallback gracioso
@@ -47,3 +60,8 @@ O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.
 - Transições entre rotas via Framer Motion `AnimatePresence` chaveadas por
   `pathname`.
 - Documentação inicial: `README.md`, `CHANGELOG.md`.
+
+### Changed
+- Removidos emojis do README; status do roadmap agora em texto
+  (Concluída / Próxima / Pendente).
+- Seção de licença do README alinhada à GPL-3.0 do `LICENSE`.

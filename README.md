@@ -6,7 +6,7 @@ Mobile-first PWA, 100% gratuita, sem backend. Toda a inteligência roda no dispo
 
 ---
 
-## ✨ Por que existe
+## Por que existe
 
 Apps de calorias tradicionais exigem buscar cada alimento e digitar gramas. Atletas precisam de algo mais rápido. AthleteTrack aceita:
 
@@ -16,7 +16,7 @@ Apps de calorias tradicionais exigem buscar cada alimento e digitar gramas. Atle
 
 ---
 
-## 🧱 Stack
+## Stack
 
 | Camada            | Tecnologia                              | Custo  |
 | ----------------- | --------------------------------------- | ------ |
@@ -35,7 +35,7 @@ Sem backend, sem banco, sem servidor. Dados ficam em `localStorage` + IndexedDB.
 
 ---
 
-## 📱 PWA
+## PWA
 
 - Manifesto standalone, orientação retrato, ícone maskable.
 - Service Worker:
@@ -47,22 +47,22 @@ Sem backend, sem banco, sem servidor. Dados ficam em `localStorage` + IndexedDB.
 
 ---
 
-## 🗺️ Roadmap (8 etapas)
+## Roadmap (8 etapas)
 
 | #   | Etapa                                                | Status      |
 | --- | ---------------------------------------------------- | ----------- |
-| 1   | Estrutura PWA base (shell mobile + SW)               | ✅ Concluída |
-| 2   | Módulo de IA (parsing + confirmação + salvar)        | 🔄 Próxima  |
-| 3   | Diário do dia + painel de macros                     | ⏳          |
-| 4   | Calculadora TMB / TDEE                               | ⏳          |
-| 5   | Hidratação                                           | ⏳          |
-| 6   | Evolução com gráficos (7 / 30 dias)                  | ⏳          |
-| 7   | Perfil + exportação JSON                             | ⏳          |
-| 8   | App unificado final                                  | ⏳          |
+| 1   | Estrutura PWA base (shell mobile + SW)               | Concluída   |
+| 2   | Módulo de IA (parsing + confirmação + salvar)        | Concluída   |
+| 3   | Diário do dia + painel de macros                     | Concluída   |
+| 4   | Calculadora TMB / TDEE                               | Próxima     |
+| 5   | Hidratação                                           | Pendente    |
+| 6   | Evolução com gráficos (7 / 30 dias)                  | Pendente    |
+| 7   | Perfil + exportação JSON                             | Pendente    |
+| 8   | App unificado final                                  | Pendente    |
 
 ---
 
-## 🚀 Como rodar
+## Como rodar
 
 ```bash
 npm install
@@ -75,17 +75,17 @@ Para abrir no celular: rode `npm run dev`, descubra o IP da máquina na rede (`i
 
 ---
 
-## 🔑 Chave Gemini
+## Chave Gemini
 
-A chave é configurada **no app**, pela tela de Perfil (etapa 7). É armazenada apenas em `localStorage` — nunca sai do dispositivo.
+A chave é configurada **no app**, pela tela de Perfil. É armazenada apenas em `localStorage` — nunca sai do dispositivo.
 
-Cria a chave grátis em [aistudio.google.com](https://aistudio.google.com/app/apikey).
+Crie a chave grátis em [aistudio.google.com](https://aistudio.google.com/app/apikey).
 
 Cota gratuita: 1500 requisições/dia no Gemini 2.0 Flash — o suficiente para uso pessoal intensivo.
 
 ---
 
-## 📂 Estrutura
+## Estrutura
 
 ```
 ComeAI/
@@ -97,20 +97,34 @@ ComeAI/
     ├── main.jsx          monta React + registra SW
     ├── App.jsx           rotas
     ├── index.css         Tailwind + safe-area
+    ├── data/
+    │   └── taco-mini.json   subconjunto TACO embarcado
+    ├── lib/
+    │   ├── settings.js      chave Gemini + perfil em localStorage
+    │   ├── db.js            IndexedDB por dia local
+    │   ├── format.js        helpers (kcal, g, %, uuid)
+    │   ├── units.js         parser pt-BR de quantidades
+    │   ├── taco.js          loader TACO + Fuse.js
+    │   ├── openfoodfacts.js cliente OFF v2 com cache
+    │   ├── gemini.js        cliente Gemini Flash (fetch + JSON schema)
+    │   ├── nutritionEngine.js  cascata TACO → OFF → Gemini
+    │   └── speech.js        wrapper Web Speech API
     ├── components/
     │   ├── Layout.jsx        shell mobile (480px) com transições
     │   ├── TopBar.jsx        header sticky + data + título
     │   ├── BottomTabBar.jsx  4 tabs + slot central para FAB
     │   ├── FAB.jsx           botão flutuante central
-    │   ├── QuickLogSheet.jsx bottom sheet drag-to-dismiss
+    │   ├── QuickLogSheet.jsx bottom sheet com fluxo de IA
     │   ├── InstallPrompt.jsx prompt PWA customizado
-    │   └── PagePlaceholder.jsx
+    │   ├── PagePlaceholder.jsx
+    │   ├── ai/               VoiceButton, ConfidenceBadge, FoodItemCard, ConfirmationView
+    │   └── diary/            DaySelector, MacroRing, MealCard, MealSection, DayDelta
     └── pages/            Diary, Hydration, Progress, Profile, Calculator
 ```
 
 ---
 
-## 🧭 Decisões de arquitetura
+## Decisões de arquitetura
 
 - **Sem backend**: dados sensíveis (refeições, peso, chave de API) ficam no dispositivo. Reduz custo a zero e elimina vetor de privacidade.
 - **Cascata nutricional**: TACO → Open Food Facts → estimativa Gemini. Sempre tenta a fonte mais confiável e barata primeiro.
@@ -118,10 +132,12 @@ ComeAI/
 - **Tab bar com 5 colunas e slot central vazio**: padrão consagrado (Strava, MyFitnessPal); FAB se sobrepõe sem cobrir ícones.
 - **`ring-4 ring-bg` no FAB**: cria recorte concavo na tab bar sem precisar de SVG mask.
 - **Dark mode por padrão**: economia em OLED + reduz fadiga (atletas registram jantar tarde).
+- **Swipe-to-delete no Diary**: gesto natural mobile (commit em `−60 px` ou velocidade `< −400 px/s`).
+- **IndexedDB bucketado por dia local**: carrega só o dia consultado, evita scan completo.
 
 ---
 
-## 📄 Licença
+## Licença
 
 Licenciado sob a **[GNU General Public License v3.0](LICENSE)** (GPL-3.0).
 
