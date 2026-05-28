@@ -148,6 +148,21 @@ export async function getTotalsForDay(iso) {
 }
 
 /**
+ * @description Shift a local ISO date by N days (positive or negative). Used
+ *   by the diary's day navigation arrows. Operates on string→string so we
+ *   never accidentally drift across DST when crossing midnight.
+ * @param {string} iso  YYYY-MM-DD
+ * @param {number} delta
+ * @returns {string}
+ */
+export function shiftISO(iso, delta) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  dt.setDate(dt.getDate() + delta);
+  return toLocalISODate(dt);
+}
+
+/**
  * @description Dump every day's meals to a serializable object (used by the
  *   Profile → "Export JSON" flow in Phase 7).
  * @returns {Promise<{days: Record<string, MealEntry[]>}>}
