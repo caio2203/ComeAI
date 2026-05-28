@@ -5,9 +5,9 @@
  * Exports: Layout (default)
  * Depends on: framer-motion AnimatePresence keyed by pathname for transitions
  */
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BottomTabBar from './BottomTabBar.jsx';
 import FAB from './FAB.jsx';
 import TopBar from './TopBar.jsx';
@@ -29,7 +29,18 @@ import QuickLogSheet from './QuickLogSheet.jsx';
  */
 export default function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // PWA shortcut "Registrar refeição" lands on /?action=quick-log. Open the
+  // sheet, then strip the param so a refresh doesn't reopen it.
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('action') === 'quick-log') {
+      setSheetOpen(true);
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.search, location.pathname, navigate]);
 
   return (
     <div className="app-shell relative flex flex-col h-full w-full max-w-[480px] mx-auto bg-bg text-white">

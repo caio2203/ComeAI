@@ -54,6 +54,7 @@ export default function Profile() {
   const [goal, setGoal] = useState(profile.goal || 'maintenance');
   const [water, setWater] = useState(profile.waterTargetMl ? String(profile.waterTargetMl) : '');
   const [savedPersonal, setSavedPersonal] = useState(false);
+  const [savedWater, setSavedWater] = useState(false);
 
   // Backup
   const fileRef = useRef(null);
@@ -68,7 +69,9 @@ export default function Profile() {
     setTimeout(() => setSavedAI(false), 1500);
   };
 
-  const savePersonal = () => {
+  // Both forms persist the same profile object; only the confirmation flag
+  // differs so the right button shows "Salvo".
+  const persistProfile = () => {
     const w = numeric(weight);
     const h = numeric(height);
     const a = numeric(age);
@@ -84,8 +87,18 @@ export default function Profile() {
       // Blank field = let the formula decide; store undefined, not 0.
       waterTargetMl: ml > 0 ? Math.round(ml) : undefined,
     });
+  };
+
+  const savePersonal = () => {
+    persistProfile();
     setSavedPersonal(true);
     setTimeout(() => setSavedPersonal(false), 1500);
+  };
+
+  const saveWater = () => {
+    persistProfile();
+    setSavedWater(true);
+    setTimeout(() => setSavedWater(false), 1500);
   };
 
   const autoWater = dailyTarget({ weightKg: numeric(weight) || profile.weightKg });
@@ -240,10 +253,10 @@ export default function Profile() {
           Automatico pelo peso: <span className="text-water font-semibold">{autoWater} ml</span> (35 ml/kg).
         </p>
         <button
-          onClick={savePersonal}
+          onClick={saveWater}
           className="w-full mt-3 h-11 rounded-xl bg-bg-elev border border-white/10 text-white/80 font-semibold"
         >
-          {savedPersonal ? 'Salvo' : 'Salvar meta'}
+          {savedWater ? 'Salvo' : 'Salvar meta'}
         </button>
       </Section>
 

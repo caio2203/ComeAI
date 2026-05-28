@@ -7,6 +7,18 @@ O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.
 ## [Unreleased]
 
 ### Added
+- **App unificado final (etapa 8)**: revisão geral de navegação e fechamento
+  de pontas soltas para deixar o app pronto para uso.
+  - Ícones PWA `icon-192.png` e `icon-512.png` gerados a partir do `icon.svg`
+    (o manifesto os referenciava mas os arquivos nao existiam — a instalacao
+    como app nao tinha icone). Adicionados tambem ao precache do Service Worker.
+  - Atalho "Registrar refeicao" do manifesto (`/?action=quick-log`) agora abre
+    de fato o registro por IA: o `Layout` le o parametro, abre o QuickLogSheet
+    e limpa a URL.
+  - Avatar do `TopBar` mostra a inicial do nome do perfil e virou atalho para a
+    tela de Perfil.
+  - Botoes "Salvar dados" e "Salvar meta" do Perfil agora tem confirmacao
+    independente (antes compartilhavam o mesmo estado e piscavam juntos).
 - **Perfil + exportação JSON (etapa 7)**: tela de Perfil completa.
   - Formulário de dados pessoais editável (nome, sexo, peso, altura, idade,
     nível de atividade, objetivo) gravando direto no `profile` — o MacroRing

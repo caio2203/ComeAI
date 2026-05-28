@@ -58,7 +58,7 @@ Sem backend, sem banco, sem servidor. Dados ficam em `localStorage` + IndexedDB.
 | 5   | Hidratação                                           | Concluída   |
 | 6   | Evolução com gráficos (7 / 30 dias)                  | Concluída   |
 | 7   | Perfil + exportação JSON                             | Concluída   |
-| 8   | App unificado final                                  | Próxima     |
+| 8   | App unificado final                                  | Concluída   |
 
 ---
 

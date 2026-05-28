@@ -5,7 +5,8 @@
  * Exports: TopBar (default)
  * Depends on: pathname → TITLES map (extend when adding a new top-level route)
  */
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+import { getProfile } from '../lib/settings.js';
 
 const TITLES = {
   '/': 'Hoje',
@@ -27,6 +28,8 @@ export default function TopBar() {
     day: '2-digit',
     month: 'long',
   });
+  // First letter of the configured name, falling back to the app initial.
+  const initial = (getProfile().name || 'A').trim().charAt(0).toUpperCase() || 'A';
 
   return (
     <header className="pt-safe px-5 pb-3 bg-bg/95 backdrop-blur sticky top-0 z-30 border-b border-white/5">
@@ -37,9 +40,13 @@ export default function TopBar() {
           </p>
           <h1 className="text-2xl font-extrabold tracking-tight">{title}</h1>
         </div>
-        <div className="w-10 h-10 rounded-full bg-brand-500/10 border border-brand-500/30 flex items-center justify-center">
-          <span className="text-brand-400 font-bold">A</span>
-        </div>
+        <Link
+          to="/perfil"
+          aria-label="Abrir perfil"
+          className="w-10 h-10 rounded-full bg-brand-500/10 border border-brand-500/30 flex items-center justify-center active:bg-brand-500/20"
+        >
+          <span className="text-brand-400 font-bold">{initial}</span>
+        </Link>
       </div>
     </header>
   );
