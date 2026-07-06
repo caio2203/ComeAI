@@ -63,6 +63,7 @@ function Row({ entry, isLast, onDelete }) {
         drag="x"
         dragConstraints={{ left: -120, right: 0 }}
         dragElastic={{ left: 0.05, right: 0 }}
+        dragSnapToOrigin
         onDragEnd={(_, info) => {
           if (info.offset.x < -60 || info.velocity.x < -400) onDelete();
         }}

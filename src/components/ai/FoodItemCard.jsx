@@ -89,9 +89,11 @@ export default function FoodItemCard({ item, onChange, onRemove }) {
         <input
           type="range"
           min={5}
-          max={500}
+          // Grow the ceiling for big portions so the slider never silently
+          // clamps grams (and macros) down to 500 when the item is larger.
+          max={Math.max(500, Math.ceil(item.grams / 50) * 50)}
           step={5}
-          value={Math.min(500, Math.round(item.grams))}
+          value={Math.round(item.grams)}
           onChange={(e) => setGrams(Number(e.target.value))}
           className="w-full accent-brand-500"
         />

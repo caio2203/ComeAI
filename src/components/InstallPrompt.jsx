@@ -49,6 +49,7 @@ export default function InstallPrompt() {
   const dismiss = () => {
     localStorage.setItem(DISMISS_KEY, String(Date.now()));
     setShow(false);
+    setDeferred(null);
   };
 
   return (

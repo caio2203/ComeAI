@@ -58,13 +58,14 @@ export default function Diary() {
   }, [iso]);
 
   useEffect(() => {
-    const onSaved = () => refresh();
+    // Re-bind per `iso` so a save always refreshes the day actually on screen —
+    // otherwise the listener keeps the first render's iso and reloads the wrong
+    // day when a meal is logged while viewing a past date.
+    const onSaved = () => refresh(iso);
     window.addEventListener('comeai:meal-saved', onSaved);
     return () => window.removeEventListener('comeai:meal-saved', onSaved);
-    // refresh() reads `iso` via closure of the current render; we rely on the
-    // other useEffect (above) to re-fetch when iso changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [iso]);
 
   const remove = async (id) => {
     await deleteMeal(iso, id);
