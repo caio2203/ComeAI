@@ -29,12 +29,9 @@ export default function MealCard({ meal, onRemove }) {
   });
 
   return (
-    <motion.div
-      layout
-      exit={{ opacity: 0, height: 0, marginTop: 0 }}
-      transition={{ duration: 0.2 }}
-      className="relative overflow-hidden rounded-2xl"
-    >
+    // ponytail: plain wrapper on purpose — a `layout`+height:0 exit here fought
+    // the draggable child (style={{x}}) and froze the list on add/delete.
+    <div className="relative overflow-hidden rounded-2xl">
       <motion.div
         aria-hidden
         style={{ opacity: deleteOpacity }}
@@ -114,7 +111,7 @@ export default function MealCard({ meal, onRemove }) {
           </ul>
         </motion.div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }
 
