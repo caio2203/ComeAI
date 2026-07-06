@@ -23,9 +23,13 @@ export default function FAB({ onClick }) {
       onClick={onClick}
       whileTap={{ scale: 0.92 }}
       whileHover={{ scale: 1.04 }}
+      // X centering lives in framer's transform (`x: -50%`), not Tailwind's
+      // -translate-x-1/2: whileTap/whileHover rewrite the inline transform and
+      // would drop a CSS translate, jerking the button to the right on tap.
+      style={{ x: '-50%' }}
       // ring-4 ring-bg: 4px ring painted in the page bg colour fakes a concave
       // cutout in the tab bar — no SVG mask required. Bump if tab-bar height changes.
-      className="absolute left-1/2 -translate-x-1/2 bottom-[calc(env(safe-area-inset-bottom,0px)+1.5rem)] z-30
+      className="absolute left-1/2 bottom-[calc(env(safe-area-inset-bottom,0px)+1.5rem)] z-30
                  w-16 h-16 rounded-full bg-brand-500 text-white shadow-fab
                  flex items-center justify-center ring-4 ring-bg
                  active:bg-brand-600"

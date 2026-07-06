@@ -82,11 +82,13 @@ export default function Hydration() {
         {floater && (
           <motion.span
             key={floater.id}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: -28 }}
+            initial={{ opacity: 0, x: '-50%', y: 8 }}
+            animate={{ opacity: 1, x: '-50%', y: -28 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="absolute left-1/2 -translate-x-1/2 top-1/2 text-water font-extrabold text-lg pointer-events-none"
+            // x:-50% keeps the label centred; animating y via framer overrides
+            // any Tailwind -translate-x, so centering has to live here too.
+            className="absolute left-1/2 top-1/2 text-water font-extrabold text-lg pointer-events-none"
           >
             +{floater.ml} ml
           </motion.span>
