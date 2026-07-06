@@ -167,7 +167,8 @@ export function parseQuantityWithName(token) {
 }
 
 // ponytail: self-check for the regex ordering — `node src/lib/units.js`.
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Guard on `process` so this stays inert in the browser bundle.
+if (typeof process !== 'undefined' && import.meta.url === `file://${process.argv[1]}`) {
   const eq = (text, grams) => {
     const g = parseQuantity(text).grams;
     if (g !== grams) throw new Error(`parseQuantity("${text}") = ${g}, expected ${grams}`);
