@@ -7,10 +7,12 @@
  *  - network-first for Gemini / Open Food Facts (fresh data, cache fallback)
  *  - navigation fallback to /index.html so react-router boots any route offline
  *
- * Bump VERSION on deploy to invalidate every cache namespace.
+ * VERSION is stamped at build time (vite.config.js) so every production build
+ * gets a unique cache namespace and `activate` drops the previous one — no
+ * manual bumping. Falls back to a static token when served unprocessed (dev).
  */
 
-const VERSION = 'comeai-v1';
+const VERSION = 'comeai-__SW_VERSION__';
 const SHELL_CACHE = `shell-${VERSION}`;
 const RUNTIME_CACHE = `runtime-${VERSION}`;
 

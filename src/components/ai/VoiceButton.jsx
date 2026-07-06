@@ -12,9 +12,10 @@ import { createRecognition, isSupported } from '../../lib/speech.js';
  * @description Mic button. Pulses while recording.
  * @param {object} props
  * @param {(text: string, isFinal: boolean) => void} props.onTranscript
+ * @param {() => void} [props.onStart] - fires when a recording session begins
  * @returns {JSX.Element | null}
  */
-export default function VoiceButton({ onTranscript }) {
+export default function VoiceButton({ onTranscript, onStart }) {
   const [active, setActive] = useState(false);
   const recRef = useRef(null);
 
@@ -27,6 +28,7 @@ export default function VoiceButton({ onTranscript }) {
       recRef.current?.stop();
       return;
     }
+    onStart?.();
     const rec = createRecognition({
       onResult: (text, isFinal) => onTranscript(text, isFinal),
       onEnd: () => setActive(false),

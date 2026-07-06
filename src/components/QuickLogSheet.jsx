@@ -12,7 +12,7 @@
  *   so Diary/Progress can refresh without a global store.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import VoiceButton from './ai/VoiceButton.jsx';
 import ConfirmationView from './ai/ConfirmationView.jsx';
@@ -139,6 +139,9 @@ export default function QuickLogSheet({ open, onClose }) {
 
 function InputStep({ text, setText, onCalculate, error, onClose }) {
   const geminiOn = hasGemini();
+  // Snapshot the typed text when the mic starts so dictation appends to it
+  // (and to earlier dictations) instead of wiping what's already there.
+  const voiceBase = useRef('');
   return (
     <div className="px-6 pt-3 pb-safe flex flex-col flex-1 overflow-y-auto no-scrollbar">
       <h2 className="text-xl font-bold mb-1">Registrar refeição</h2>
@@ -156,8 +159,11 @@ function InputStep({ text, setText, onCalculate, error, onClose }) {
         />
         <div className="absolute right-3 top-3">
           <VoiceButton
-            onTranscript={(t, isFinal) => {
-              setText(t);
+            onStart={() => {
+              voiceBase.current = text.trim();
+            }}
+            onTranscript={(t) => {
+              setText(voiceBase.current ? `${voiceBase.current} ${t}` : t);
             }}
           />
         </div>
