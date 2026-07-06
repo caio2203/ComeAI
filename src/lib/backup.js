@@ -28,7 +28,7 @@ import {
 import { getProfile, setProfile, getModel, setModel, clearSettings } from './settings.js';
 
 export const BACKUP_VERSION = 1;
-const APP_TAG = 'athletetrack-backup';
+const APP_TAG = 'comeai-backup';
 
 /**
  * @description Assemble the full backup object (no API key).
@@ -58,7 +58,7 @@ export async function downloadBackup() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `athletetrack-${toLocalISODate()}.json`;
+  a.download = `comeai-${toLocalISODate()}.json`;
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -92,11 +92,11 @@ export function readBackupFile(file) {
  *   so a random JSON cannot clobber the user's data.
  * @param {object} parsed  output of readBackupFile
  * @returns {Promise<{mealDays:number, waterDays:number}>}
- * @throws if the payload is not an AthleteTrack backup
+ * @throws if the payload is not an ComeAI backup
  */
 export async function restoreBackup(parsed) {
   if (!parsed || parsed.app !== APP_TAG) {
-    throw new Error('Arquivo nao reconhecido como backup do AthleteTrack.');
+    throw new Error('Arquivo nao reconhecido como backup do ComeAI.');
   }
   if (parsed.profile && typeof parsed.profile === 'object') setProfile(parsed.profile);
   if (parsed.model) setModel(parsed.model);

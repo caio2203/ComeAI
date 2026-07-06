@@ -19,7 +19,7 @@ import { get, set, del, createStore } from 'idb-keyval';
 import { toLocalISODate } from './db.js';
 import { uuid } from './format.js';
 
-const store = createStore('athletetrack', 'kv');
+const store = createStore('comeai', 'kv');
 
 const INDEX_KEY = 'hydration:index';
 const dayKey = (iso) => `hydration:day:${iso}`;

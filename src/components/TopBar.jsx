@@ -22,14 +22,14 @@ const TITLES = {
  */
 export default function TopBar() {
   const { pathname } = useLocation();
-  const title = TITLES[pathname] ?? 'AthleteTrack';
+  const title = TITLES[pathname] ?? 'ComeAI';
   const today = new Date().toLocaleDateString('pt-BR', {
     weekday: 'long',
     day: '2-digit',
     month: 'long',
   });
   // First letter of the configured name, falling back to the app initial.
-  const initial = (getProfile().name || 'A').trim().charAt(0).toUpperCase() || 'A';
+  const initial = (getProfile().name || 'C').trim().charAt(0).toUpperCase() || 'C';
 
   return (
     <header className="pt-safe px-5 pb-3 bg-bg/95 backdrop-blur sticky top-0 z-30 border-b border-white/5">

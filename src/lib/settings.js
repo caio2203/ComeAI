@@ -7,7 +7,7 @@
  *          hasGemini, clearSettings
  */
 
-const NS = 'athletetrack:settings';
+const NS = 'comeai:settings';
 const KEY_API = `${NS}:gemini-key`;
 const KEY_MODEL = `${NS}:gemini-model`;
 const KEY_PROFILE = `${NS}:profile`;

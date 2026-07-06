@@ -1,14 +1,14 @@
 /**
  * Captures the browser's `beforeinstallprompt` event and renders a custom
- * "Install AthleteTrack" CTA. Dismissals are persisted for 14 days.
+ * "Install ComeAI" CTA. Dismissals are persisted for 14 days.
  *
  * Exports: InstallPrompt (default)
- * Depends on: localStorage key `athletetrack:install-dismissed-at`
+ * Depends on: localStorage key `comeai:install-dismissed-at`
  */
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const DISMISS_KEY = 'athletetrack:install-dismissed-at';
+const DISMISS_KEY = 'comeai:install-dismissed-at';
 // 14-day cooldown after dismiss. Softens Chrome's own ~90d native suppression
 // so users still see our custom CTA again in two weeks.
 const DISMISS_DAYS = 14;
@@ -63,10 +63,10 @@ export default function InstallPrompt() {
         >
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-xl bg-brand-500/15 border border-brand-500/30 flex items-center justify-center text-brand-400 font-bold">
-              A
+              C
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold">Instalar AthleteTrack</p>
+              <p className="text-sm font-semibold">Instalar ComeAI</p>
               <p className="text-xs text-white/60 mt-0.5">
                 Abra como app no seu celular. Funciona offline.
               </p>

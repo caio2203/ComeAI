@@ -1,5 +1,5 @@
 /**
- * AthleteTrack Service Worker.
+ * ComeAI Service Worker.
  *
  * Strategy:
  *  - precache app shell on install (instant cold-start offline)
@@ -10,7 +10,7 @@
  * Bump VERSION on deploy to invalidate every cache namespace.
  */
 
-const VERSION = 'athletetrack-v1';
+const VERSION = 'comeai-v1';
 const SHELL_CACHE = `shell-${VERSION}`;
 const RUNTIME_CACHE = `runtime-${VERSION}`;
 

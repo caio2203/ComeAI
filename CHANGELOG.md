@@ -1,12 +1,32 @@
 # Changelog
 
-Todas as mudanças notáveis do AthleteTrack são documentadas aqui.
+Todas as mudanças notáveis do ComeAI são documentadas aqui.
 
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+### Changed
+- **Renomeado para ComeAI**: o app, o manifesto PWA, o título, o Service Worker,
+  os namespaces de armazenamento (`comeai:*`, stores IndexedDB) e o User-Agent do
+  Open Food Facts passaram de `AthleteTrack` para `ComeAI`. Dados locais e backups
+  criados sob o nome antigo não são lidos pela versão nova (recomeço limpo,
+  aceitável em pré-distribuição).
+
+### Fixed
+- **Altura em telas modernas (Samsung / iPhone)**: shell passou a usar `100dvh`
+  (viewport dinâmico) em vez de `100%`, para a barra de abas não ficar escondida
+  atrás da barra de endereço retrátil do navegador.
+- **Área segura inferior**: o padding de rodapé do conteúdo agora inclui
+  `env(safe-area-inset-bottom)`, garantindo que o último item da lista não fique
+  sob a barra de abas em iPhones com indicador de home.
+- **Zoom / acessibilidade**: removido `user-scalable=no` do viewport (pinça de
+  zoom voltou a funcionar). Para o iOS não dar zoom automático ao focar um
+  campo, todos os controles de texto foram fixados em 16px via CSS.
+
 ### Added
+- **Guia de distribuição como APK** no README (PWABuilder / Bubblewrap) para
+  compartilhar com amigos e família sem passar por loja de apps.
 - **App unificado final (etapa 8)**: revisão geral de navegação e fechamento
   de pontas soltas para deixar o app pronto para uso.
   - Ícones PWA `icon-192.png` e `icon-512.png` gerados a partir do `icon.svg`

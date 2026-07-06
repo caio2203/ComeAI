@@ -13,12 +13,12 @@
 
 import { get, set, createStore } from 'idb-keyval';
 
-const store = createStore('athletetrack', 'off-cache');
+const store = createStore('comeai', 'off-cache');
 
 const BASE = 'https://world.openfoodfacts.org';
 const HEADERS = {
   // OFF asks consumers to identify themselves; this string is informational only.
-  'User-Agent': 'AthleteTrack-PWA/0.1 (https://github.com/caio2203/ComeAI)',
+  'User-Agent': 'ComeAI-PWA/0.1 (https://github.com/caio2203/ComeAI)',
 };
 
 /**

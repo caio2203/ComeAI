@@ -8,7 +8,7 @@
  *   4. "done"       — short success toast, sheet auto-closes
  *
  * Exports: QuickLogSheet (default)
- * Depends on: framer-motion drag-to-dismiss + window event `athletetrack:meal-saved`
+ * Depends on: framer-motion drag-to-dismiss + window event `comeai:meal-saved`
  *   so Diary/Progress can refresh without a global store.
  */
 
@@ -75,7 +75,7 @@ export default function QuickLogSheet({ open, onClose }) {
   const onSaved = () => {
     setStep('done');
     // Notify other views (Diary, Progress) without wiring a global store.
-    window.dispatchEvent(new CustomEvent('athletetrack:meal-saved'));
+    window.dispatchEvent(new CustomEvent('comeai:meal-saved'));
     setTimeout(onClose, 900);
   };
 

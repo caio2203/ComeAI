@@ -59,8 +59,8 @@ export default function Diary() {
 
   useEffect(() => {
     const onSaved = () => refresh();
-    window.addEventListener('athletetrack:meal-saved', onSaved);
-    return () => window.removeEventListener('athletetrack:meal-saved', onSaved);
+    window.addEventListener('comeai:meal-saved', onSaved);
+    return () => window.removeEventListener('comeai:meal-saved', onSaved);
     // refresh() reads `iso` via closure of the current render; we rely on the
     // other useEffect (above) to re-fetch when iso changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps

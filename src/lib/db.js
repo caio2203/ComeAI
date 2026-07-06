@@ -13,7 +13,7 @@
 
 import { get, set, del, createStore } from 'idb-keyval';
 
-const store = createStore('athletetrack', 'kv');
+const store = createStore('comeai', 'kv');
 
 const INDEX_KEY = 'meals:index';
 const dayKey = (iso) => `meals:day:${iso}`;

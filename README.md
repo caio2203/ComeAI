@@ -1,4 +1,4 @@
-# AthleteTrack
+# ComeAI
 
 > Controle calórico inteligente para atletas. Registre refeições em linguagem natural (voz ou texto) e o app calcula tudo via IA.
 
@@ -8,7 +8,7 @@ Mobile-first PWA, 100% gratuita, sem backend. Toda a inteligência roda no dispo
 
 ## Por que existe
 
-Apps de calorias tradicionais exigem buscar cada alimento e digitar gramas. Atletas precisam de algo mais rápido. AthleteTrack aceita:
+Apps de calorias tradicionais exigem buscar cada alimento e digitar gramas. Atletas precisam de algo mais rápido. ComeAI aceita:
 
 > *"almocei arroz, feijão, frango grelhado, salada e um copo de suco"*
 
@@ -82,6 +82,40 @@ A chave é configurada **no app**, pela tela de Perfil. É armazenada apenas em 
 Crie a chave grátis em [aistudio.google.com](https://aistudio.google.com/app/apikey).
 
 Cota gratuita: 1500 requisições/dia no Gemini 2.0 Flash — o suficiente para uso pessoal intensivo.
+
+---
+
+## Distribuir como APK (amigos e família)
+
+O ComeAI é uma PWA, então **não precisa de Android Studio nem de projeto nativo**.
+O caminho mais curto para um `.apk` que dá pra mandar no WhatsApp:
+
+1. **Publique a build num host HTTPS grátis** (a PWA precisa de uma URL pública):
+
+   ```bash
+   npm run build          # gera dist/
+   ```
+
+   Suba a pasta `dist/` no [Cloudflare Pages](https://pages.cloudflare.com),
+   [GitHub Pages](https://pages.github.com) ou [Netlify](https://netlify.com) — todos gratuitos.
+
+2. **Gere o APK** com o [PWABuilder](https://www.pwabuilder.com): cole a URL,
+   escolha *Android → Generate*, e baixe o pacote. Ele produz um APK assinado
+   (TWA — o app abre a PWA em tela cheia, sem barra do navegador).
+
+3. **Instale nos celulares**: mande o `.apk`, e no Android ative
+   *Configurações → Apps → Instalar apps desconhecidos* para o app que recebeu o arquivo.
+
+> Para tirar a barrinha de URL do Chrome no APK, o PWABuilder gera um
+> `assetlinks.json` — hospede-o em `https://<sua-url>/.well-known/assetlinks.json`.
+> Sem isso o app funciona igual, só aparece uma fina barra de endereço.
+
+Alternativa reproduzível localmente: [Bubblewrap CLI](https://github.com/GoogleChromeLabs/bubblewrap)
+(`bubblewrap init --manifest https://<sua-url>/manifest.json` → `bubblewrap build`).
+
+**iPhone:** a App Store não permite sideload de `.apk`. Para iOS, os amigos
+abrem a URL no Safari e usam *Compartilhar → Adicionar à Tela de Início* —
+instala como app com o mesmo ícone e modo offline.
 
 ---
 

@@ -9,9 +9,17 @@
 }
 
 html,
-body,
-#root {
+body {
   height: 100%;
+  background: #0B0F14;
+}
+
+/* ponytail: dvh tracks the *dynamic* viewport so the bottom tab bar isn't
+   swallowed by the collapsing address bar on iOS Safari / Chrome Android.
+   100vh fallback for browsers without dvh. */
+#root {
+  height: 100vh;
+  height: 100dvh;
   background: #0B0F14;
 }
 
@@ -19,6 +27,15 @@ body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+/* Pinch-zoom is enabled (no user-scalable=no). iOS Safari auto-zooms when a
+   text control smaller than 16px gets focus — pin them to 16px to kill that
+   jump. Sliders/checkboxes are unaffected by font-size, so exclude them. */
+input:not([type='range']):not([type='checkbox']):not([type='radio']),
+textarea,
+select {
+  font-size: 16px;
 }
 
 @layer components {

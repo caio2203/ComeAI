@@ -1,6 +1,6 @@
 {
-  "name": "AthleteTrack",
-  "short_name": "AthleteTrack",
+  "name": "ComeAI",
+  "short_name": "ComeAI",
   "description": "Controle calórico inteligente para atletas. Registre refeições por voz ou texto com IA.",
   "start_url": "/",
   "scope": "/",

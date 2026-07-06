@@ -46,7 +46,7 @@ export default function Layout() {
     <div className="app-shell relative flex flex-col h-full w-full max-w-[480px] mx-auto bg-bg text-white">
       <TopBar />
 
-      <main className="flex-1 overflow-y-auto no-scrollbar pb-28">
+      <main className="flex-1 overflow-y-auto no-scrollbar pb-[calc(7rem+env(safe-area-inset-bottom))]">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
