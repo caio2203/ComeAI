@@ -81,7 +81,11 @@ function Row({ entry, isLast, onDelete }) {
           </div>
         </div>
         <button
+          type="button"
           onClick={onDelete}
+          // The button sits on the drag surface; stop the pointerdown from
+          // starting a drag so the tap stays a clean click and actually deletes.
+          onPointerDownCapture={(e) => e.stopPropagation()}
           aria-label="Apagar registro"
           className="w-8 h-8 rounded-lg text-white/35 hover:text-protein active:bg-white/5"
         >

@@ -67,7 +67,11 @@ export default function MealCard({ meal, onRemove }) {
             <p className="text-sm text-white/85 mt-0.5 line-clamp-2">{meal.rawDescription}</p>
           </div>
           <button
+            type="button"
             onClick={() => setExpanded((v) => !v)}
+            // Sits on the swipe surface — keep pointerdown from starting a drag
+            // so tapping reliably toggles instead of nudging the card.
+            onPointerDownCapture={(e) => e.stopPropagation()}
             aria-label={expanded ? 'Recolher itens' : 'Ver itens'}
             className="w-8 h-8 rounded-xl bg-white/5 text-white/60 flex items-center justify-center shrink-0"
           >
