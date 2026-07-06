@@ -84,6 +84,7 @@ export default function QuickLogSheet({ open, onClose }) {
       {open && (
         <>
           <motion.div
+            key="qls-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -92,6 +93,7 @@ export default function QuickLogSheet({ open, onClose }) {
             className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
           />
           <motion.div
+            key="qls-sheet"
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
