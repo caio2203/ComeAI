@@ -27,8 +27,8 @@ import { kcal as fmtKcal, g as fmtG } from '../lib/format.js';
 import { Section, ChipRow, ToggleButton, NumberField } from '../components/forms/Fields.jsx';
 
 const MODEL_OPTIONS = [
-  { id: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash · 1500 req/dia' },
-  { id: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash · 1500 req/dia' },
+  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash · recomendado' },
+  { id: 'gemini-2.5-flash-lite', label: 'Gemini 2.5 Flash-Lite · mais rápido' },
 ];
 
 const numeric = (raw) => {

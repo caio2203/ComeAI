@@ -12,7 +12,18 @@ const KEY_API = `${NS}:gemini-key`;
 const KEY_MODEL = `${NS}:gemini-model`;
 const KEY_PROFILE = `${NS}:profile`;
 
-const DEFAULT_MODEL = 'gemini-2.0-flash';
+const DEFAULT_MODEL = 'gemini-2.5-flash';
+
+// Models Google has retired from the generateContent endpoint. A value from an
+// older build stored in localStorage would keep 404-ing, so getModel() migrates
+// any of these to the current default on read.
+const RETIRED_MODELS = new Set([
+  'gemini-pro',
+  'gemini-1.0-pro',
+  'gemini-1.5-pro',
+  'gemini-1.5-flash',
+  'gemini-2.0-flash',
+]);
 
 /**
  * @description Read the user's Gemini API key (empty string if unset).
@@ -40,7 +51,9 @@ export function setApiKey(key) {
  * @returns {string}
  */
 export function getModel() {
-  return localStorage.getItem(KEY_MODEL) || DEFAULT_MODEL;
+  const stored = localStorage.getItem(KEY_MODEL);
+  if (!stored || RETIRED_MODELS.has(stored)) return DEFAULT_MODEL;
+  return stored;
 }
 
 /**
