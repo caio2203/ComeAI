@@ -8,7 +8,7 @@
  * Exports: EntryList (default)
  */
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 
 const formatTime = (ts) =>
   new Date(ts).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
@@ -32,30 +32,26 @@ export default function EntryList({ entries, onDelete }) {
 
   return (
     <div className="rounded-2xl bg-bg-card border border-white/5 overflow-hidden">
-      <AnimatePresence initial={false}>
-        {sorted.map((e, i) => (
-          <Row
-            key={e.id}
-            entry={e}
-            isLast={i === sorted.length - 1}
-            onDelete={() => onDelete(e.id)}
-          />
-        ))}
-      </AnimatePresence>
+      {sorted.map((e, i) => (
+        <Row
+          key={e.id}
+          entry={e}
+          isLast={i === sorted.length - 1}
+          onDelete={() => onDelete(e.id)}
+        />
+      ))}
     </div>
   );
 }
 
 function Row({ entry, isLast, onDelete }) {
+  // Mirror MealCard's proven swipe: a bound motion value we reset on release.
+  // No `layout`/height-exit/dragSnapToOrigin here — that combo fought the drag
+  // transform and froze the list on delete.
+  const x = useMotionValue(0);
+
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 6 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, x: -120, height: 0 }}
-      transition={{ duration: 0.2 }}
-      className={`relative ${isLast ? '' : 'border-b border-white/5'}`}
-    >
+    <div className={`relative ${isLast ? '' : 'border-b border-white/5'}`}>
       <div className="absolute inset-y-0 right-0 w-28 flex items-center justify-center bg-protein/15">
         <span className="text-[11px] font-bold text-protein uppercase tracking-wider">Apagar</span>
       </div>
@@ -63,9 +59,10 @@ function Row({ entry, isLast, onDelete }) {
         drag="x"
         dragConstraints={{ left: -120, right: 0 }}
         dragElastic={{ left: 0.05, right: 0 }}
-        dragSnapToOrigin
+        style={{ x }}
         onDragEnd={(_, info) => {
           if (info.offset.x < -60 || info.velocity.x < -400) onDelete();
+          else x.set(0);
         }}
         // `relative` keeps the row painted above the "Apagar" reveal — without it
         // the absolute overlay paints on top and bleeds over the row at rest.
@@ -96,6 +93,6 @@ function Row({ entry, isLast, onDelete }) {
           </svg>
         </button>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

@@ -7,7 +7,6 @@
  * Exports: MealSection (default)
  */
 
-import { AnimatePresence } from 'framer-motion';
 import MealCard from './MealCard.jsx';
 import { kcal as fmtKcal } from '../../lib/format.js';
 
@@ -27,11 +26,9 @@ export default function MealSection({ label, meals, onRemove }) {
         <h3 className="text-[11px] uppercase tracking-widest text-white/45 font-bold">{label}</h3>
         <span className="text-[11px] text-white/55 font-semibold">{fmtKcal(sectionKcal)}</span>
       </div>
-      <AnimatePresence initial={false}>
-        {meals.map((m) => (
-          <MealCard key={m.id} meal={m} onRemove={() => onRemove(m.id)} />
-        ))}
-      </AnimatePresence>
+      {meals.map((m) => (
+        <MealCard key={m.id} meal={m} onRemove={() => onRemove(m.id)} />
+      ))}
     </section>
   );
 }
