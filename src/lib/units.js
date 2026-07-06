@@ -98,8 +98,9 @@ export function parseQuantity(text, foodName = '') {
   const t = normalize(text);
   if (!t) return { grams: 100, confidence: 0.3, reason: 'empty → default 100 g' };
 
-  // Direct mass: "200g", "1,5 kg", "150 gramas"
-  const mass = t.match(/(\d+(?:[.,]\d+)?)\s*(kg|g|gramas|grama|gramas?)/);
+  // Direct mass: "200g", "1,5 kg", "150 gramas" — longest units first so
+  // "gramas" wins over "g" (otherwise "g" would match inside "gramas").
+  const mass = t.match(/(\d+(?:[.,]\d+)?)\s*(kg|gramas?|g)\b/);
   if (mass) {
     const n = parseFloat(mass[1].replace(',', '.'));
     const grams = mass[2].startsWith('k') ? n * 1000 : n;
@@ -107,7 +108,9 @@ export function parseQuantity(text, foodName = '') {
   }
 
   // Direct volume (liquids): "200 ml", "1 l" — 1 ml ≈ 1 g for water-like.
-  const vol = t.match(/(\d+(?:[.,]\d+)?)\s*(ml|l|litro|litros)/);
+  // The trailing \b keeps a bare "l" from swallowing foods that merely start
+  // with it ("1 laranja", "1 lata"), which should hit the tables below.
+  const vol = t.match(/(\d+(?:[.,]\d+)?)\s*(ml|litros?|l)\b/);
   if (vol) {
     const n = parseFloat(vol[1].replace(',', '.'));
     const grams = vol[2].startsWith('l') ? n * 1000 : n;
@@ -161,4 +164,20 @@ export function parseQuantityWithName(token) {
     .replace(/\s+/g, ' ')
     .trim();
   return { name, quantity: q };
+}
+
+// ponytail: self-check for the regex ordering — `node src/lib/units.js`.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const eq = (text, grams) => {
+    const g = parseQuantity(text).grams;
+    if (g !== grams) throw new Error(`parseQuantity("${text}") = ${g}, expected ${grams}`);
+  };
+  eq('1 laranja', 180);       // unit weight, not 1 liter
+  eq('1 lata', 350);          // household measure, not 1 liter
+  eq('2 latas de coca', 700);
+  eq('500 ml', 500);          // real volume still works
+  eq('1 litro de leite', 1000);
+  eq('150 gramas', 150);      // mass still works
+  eq('200g de arroz', 200);
+  console.log('units self-check ok');
 }

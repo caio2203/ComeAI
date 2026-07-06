@@ -55,15 +55,22 @@ export default function Hydration() {
   const total = entries.reduce((s, e) => s + e.ml, 0);
 
   const handleAdd = async (ml) => {
-    await addEntry(ml);
+    // Log against the day currently shown, not always "now" — otherwise water
+    // added while viewing a past day would silently land on today and vanish.
+    // Noon avoids the entry drifting into an adjacent day across timezones.
+    const isToday = iso === toLocalISODate();
+    await addEntry(ml, isToday ? Date.now() : new Date(`${iso}T12:00:00`));
     setFloater({ id: Date.now(), ml });
     setTimeout(() => setFloater(null), 900);
     reload();
+    // Let Progress refresh live if it's already mounted (mirrors meal-saved).
+    window.dispatchEvent(new CustomEvent('comeai:water-saved'));
   };
 
   const handleDelete = async (id) => {
     await removeEntry(iso, id);
     reload();
+    window.dispatchEvent(new CustomEvent('comeai:water-saved'));
   };
 
   return (

@@ -79,13 +79,13 @@ const SYSTEM_PROMPT = `Você é um nutricionista esportivo brasileiro. O usuári
 4. Some os macros: kcal ≈ protein·4 + carbs·4 + fat·9.
 5. NUNCA retorne texto fora do JSON. Apenas o objeto.`;
 
-async function callGemini(prompt, schema) {
+async function callGemini(prompt, schema, system = SYSTEM_PROMPT) {
   if (!hasGemini()) throw new GeminiError('Chave Gemini não configurada.');
   const key = getApiKey();
   const model = getModel();
 
   const body = {
-    system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+    system_instruction: { parts: [{ text: system }] },
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: {
       response_mime_type: 'application/json',
@@ -145,6 +145,11 @@ const SINGLE_ITEM_SCHEMA = {
   required: ['kcal', 'protein', 'carbs', 'fat'],
 };
 
+// The default SYSTEM_PROMPT tells the model to return *portion totals*; the
+// estimate below needs *per-100g* values, so it ships its own instruction to
+// avoid the caller double-scaling (per-100g × grams/100).
+const ESTIMATE_SYSTEM = `Você é um nutricionista brasileiro. Para o alimento pedido, retorne os valores nutricionais POR 100 g (não por porção), em JSON: kcal, protein, carbs, fat, confidence (0 a 1). kcal ≈ protein·4 + carbs·4 + fat·9. Apenas o objeto JSON.`;
+
 /**
  * @description Per-100g nutrition estimate for a single named item. Used by
  *   the cascade as the LAST fallback when both TACO and Open Food Facts fail.
@@ -156,6 +161,7 @@ export async function estimateNutrition(foodName) {
   const out = await callGemini(
     `Estime os valores nutricionais por 100 g do alimento: "${foodName}". Retorne apenas o JSON com kcal, protein, carbs, fat, confidence.`,
     SINGLE_ITEM_SCHEMA,
+    ESTIMATE_SYSTEM,
   );
   return {
     kcal: out.kcal,

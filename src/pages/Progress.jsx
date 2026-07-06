@@ -60,7 +60,20 @@ const ddMM = (iso) => {
 export default function Progress() {
   const [range, setRange] = useState(7);
   const [data, setData] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0);
   const profile = getProfile();
+
+  // Refetch when a meal or water entry is saved elsewhere so the charts stay
+  // live if this page is already mounted, instead of only on remount.
+  useEffect(() => {
+    const onSaved = () => setRefreshKey((k) => k + 1);
+    window.addEventListener('comeai:meal-saved', onSaved);
+    window.addEventListener('comeai:water-saved', onSaved);
+    return () => {
+      window.removeEventListener('comeai:meal-saved', onSaved);
+      window.removeEventListener('comeai:water-saved', onSaved);
+    };
+  }, []);
 
   const targets = useMemo(
     () => ({
@@ -102,7 +115,7 @@ export default function Progress() {
     return () => {
       cancelled = true;
     };
-  }, [isoDays]);
+  }, [isoDays, refreshKey]);
 
   // A day "counts" once the user logged anything that day; untracked days are
   // excluded from averages and adherence so gaps don't read as failures.
@@ -125,12 +138,21 @@ export default function Progress() {
   const adherence = useMemo(() => {
     if (trackedDays.length === 0) return null;
     const ok = trackedDays.filter((d) => {
-      const kcalOk = targets.kcal > 0 && Math.abs(d.kcal - targets.kcal) <= targets.kcal * 0.1;
-      const waterOk = targets.water > 0 && d.water >= targets.water * 0.8;
+      // Only judge the metrics the user actually logged that day — otherwise
+      // someone who tracks food but never water would sit at 0% forever.
+      const kcalOk = d.kcal === 0 || Math.abs(d.kcal - targets.kcal) <= targets.kcal * 0.1;
+      const waterOk = d.water === 0 || d.water >= targets.water * 0.8;
       return kcalOk && waterOk;
     }).length;
     return { ok, total: trackedDays.length, pct: Math.round((ok / trackedDays.length) * 100) };
   }, [trackedDays, targets]);
+
+  // Untracked days would otherwise plunge the calorie line to zero; feeding
+  // null instead makes Recharts skip them (paired with connectNulls).
+  const kcalData = useMemo(
+    () => data.map((d) => ({ ...d, kcal: d.kcal > 0 ? d.kcal : null })),
+    [data],
+  );
 
   const hasData = trackedDays.length > 0;
   // Thin the X labels on the 30-day view; 7 days fits every tick.
@@ -160,7 +182,7 @@ export default function Progress() {
         <>
           <ChartCard title="Calorias por dia" index={0}>
             <ResponsiveContainer width="100%" height={180}>
-              <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>
+              <LineChart data={kcalData} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>
                 <CartesianGrid stroke={COLOR.grid} vertical={false} />
                 <XAxis
                   dataKey="label"
@@ -187,6 +209,7 @@ export default function Progress() {
                   strokeWidth={2.5}
                   dot={{ r: 2.5, fill: COLOR.brand, strokeWidth: 0 }}
                   activeDot={{ r: 4 }}
+                  connectNulls
                   animationDuration={600}
                 />
               </LineChart>
@@ -333,7 +356,7 @@ function AdherenceCard({ adherence, index }) {
         </p>
       </div>
       <p className="text-[11px] text-white/55 mt-2 leading-relaxed">
-        Dias dentro de ±10% da meta de calorias e com pelo menos 80% da meta de água.
+        Dias em que as metas registradas bateram: calorias dentro de ±10% e água em pelo menos 80%.
       </p>
     </motion.div>
   );
