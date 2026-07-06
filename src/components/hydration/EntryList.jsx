@@ -56,7 +56,7 @@ function Row({ entry, isLast, onDelete }) {
       transition={{ duration: 0.2 }}
       className={`relative ${isLast ? '' : 'border-b border-white/5'}`}
     >
-      <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-protein/15">
+      <div className="absolute inset-y-0 right-0 w-28 flex items-center justify-center bg-protein/15">
         <span className="text-[11px] font-bold text-protein uppercase tracking-wider">Apagar</span>
       </div>
       <motion.div
@@ -67,7 +67,9 @@ function Row({ entry, isLast, onDelete }) {
         onDragEnd={(_, info) => {
           if (info.offset.x < -60 || info.velocity.x < -400) onDelete();
         }}
-        className="flex items-center justify-between gap-3 px-4 py-3 bg-bg-card"
+        // `relative` keeps the row painted above the "Apagar" reveal — without it
+        // the absolute overlay paints on top and bleeds over the row at rest.
+        className="relative flex items-center justify-between gap-3 px-4 py-3 bg-bg-card"
       >
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full bg-water/15 flex items-center justify-center">

@@ -26,7 +26,8 @@ export default function CustomAdd({ onAdd }) {
   const valid = Number.isFinite(numeric) && numeric >= MIN && numeric <= MAX;
 
   const bump = (delta) => {
-    const base = Number.isFinite(numeric) && numeric > 0 ? numeric : STEP;
+    // Start from 0 when empty so the first "+" lands on one step (50), not 100.
+    const base = Number.isFinite(numeric) && numeric > 0 ? numeric : 0;
     const next = Math.max(MIN, Math.min(MAX, base + delta));
     setValue(String(next));
   };
