@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -12,7 +12,10 @@ function stampServiceWorker() {
       const swPath = 'dist/sw.js';
       if (!existsSync(swPath)) return;
       const version = Date.now().toString(36);
-      const src = readFileSync(swPath, 'utf8').replaceAll('__SW_VERSION__', version);
+      const assets = readdirSync('dist/assets').map((f) => `/assets/${f}`);
+      const src = readFileSync(swPath, 'utf8')
+        .replaceAll('__SW_VERSION__', version)
+        .replace('/* __SW_ASSETS__ */ []', JSON.stringify(assets));
       writeFileSync(swPath, src);
     },
   };

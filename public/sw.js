@@ -16,6 +16,11 @@ const VERSION = 'comeai-__SW_VERSION__';
 const SHELL_CACHE = `shell-${VERSION}`;
 const RUNTIME_CACHE = `runtime-${VERSION}`;
 
+// Hashed build assets injected at build time (vite.config.js). Without them,
+// the first page load happens before the SW controls the page, so index-*.js
+// never lands in the runtime cache and offline cold-start is a white screen.
+const BUILD_ASSETS = /* __SW_ASSETS__ */ [];
+
 const SHELL_ASSETS = [
   '/',
   '/index.html',
@@ -23,6 +28,7 @@ const SHELL_ASSETS = [
   '/icon.svg',
   '/icon-192.png',
   '/icon-512.png',
+  ...BUILD_ASSETS,
 ];
 
 self.addEventListener('install', (event) => {

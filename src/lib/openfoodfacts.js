@@ -13,7 +13,11 @@
 
 import { get, set, createStore } from 'idb-keyval';
 
-const store = createStore('comeai', 'off-cache');
+// Its own database — NOT the shared `comeai` DB. idb-keyval fixes a DB's object
+// stores at creation, so adding a second store name ('off-cache') to `comeai`
+// left one store uncreated depending on import order, throwing NotFoundError on
+// every read (and hanging the UI on Firefox, which is strict about it).
+const store = createStore('comeai-off', 'cache');
 
 const BASE = 'https://world.openfoodfacts.org';
 const HEADERS = {
